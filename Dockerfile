@@ -1,15 +1,14 @@
-# Use stable Java 8 Alpine image
 FROM eclipse-temurin:8-jdk-alpine
 
-# Set working directory
 WORKDIR /app
 
 # Copy the jar file into the container
 COPY target/springboot-application-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port your Spring Boot app runs on (optional)
-EXPOSE 8080
+# Optional: pre-touch for file systems that need it
+RUN sh -c 'touch app.jar'
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Start the Spring Boot application
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
+
 
